@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.NFC" />
+    <uses-feature android:name="android.hardware.nfc.hce" android:required="false" />
+    <uses-feature android:name="android.hardware.camera.flash" android:required="false" />
+
+    <application
+        android:label="Torch Wallet"
+        android:allowBackup="false">
+
+        <!-- Wallet service: reports zero cards. SystemUI needs this to treat the app as a wallet. -->
+        <service
+            android:name=".StubWalletService"
+            android:exported="true"
+            android:label="Torch Wallet"
+            android:permission="android.permission.BIND_QUICK_ACCESS_WALLET_SERVICE">
+            <intent-filter>
+                <action android:name="android.service.quickaccesswallet.QuickAccessWalletService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.quickaccesswallet"
+                android:resource="@xml/quickaccesswallet" />
+        </service>
+
+        <!-- NFC stub so the app is selectable as default payment app. Never handles payments. -->
+        <service
+            android:name=".StubApduService"
+            android:exported="true"
+            android:permission="android.permission.BIND_NFC_SERVICE">
+            <intent-filter>
+                <action android:name="android.nfc.cardemulation.action.HOST_APDU_SERVICE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.nfc.cardemulation.host_apdu_service"
+                android:resource="@xml/apduservice" />
+        </service>
+
+        <!-- The actual torch toggle. Launched by the wallet gesture. -->
+        <activity
+            android:name=".TorchActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            <intent-filter>
+                <action android:name="android.service.quickaccesswallet.action.VIEW_WALLET" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.service.quickaccesswallet.action.VIEW_WALLET_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>
