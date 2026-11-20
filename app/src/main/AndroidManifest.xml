@@ -45,6 +45,7 @@
             android:noHistory="true"
             android:taskAffinity=""
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
+            android:showWhenLocked="true"
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
