@@ -17,6 +17,7 @@
             android:permission="android.permission.BIND_QUICK_ACCESS_WALLET_SERVICE">
             <intent-filter>
                 <action android:name="android.service.quickaccesswallet.QuickAccessWalletService" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
             <meta-data
                 android:name="android.quickaccesswallet"
